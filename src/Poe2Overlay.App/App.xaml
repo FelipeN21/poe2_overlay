@@ -1,0 +1,6 @@
+<!-- ThemeMode="Dark": tema Fluent do WPF (.NET 9+), para lista de seleção, caixinhas e botões escuros. -->
+<Application x:Class="Poe2Overlay.App.AppOverlay"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             ShutdownMode="OnExplicitShutdown"
+             ThemeMode="Dark" />

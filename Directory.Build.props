@@ -1,0 +1,7 @@
+<Project>
+  <!-- Toda mudança no app sobe esta versão (AAAA.MM.DD.N). O teste "versao" do harness cobra isso. -->
+  <PropertyGroup>
+    <Version>2026.11.26.1</Version>
+    <Product>Pit Overlay's</Product>
+  </PropertyGroup>
+</Project>

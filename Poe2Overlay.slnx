@@ -1,0 +1,6 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Poe2Overlay.App/Poe2Overlay.App.csproj" />
+    <Project Path="src/Poe2Overlay.Nucleo/Poe2Overlay.Nucleo.csproj" />
+  </Folder>
+</Solution>

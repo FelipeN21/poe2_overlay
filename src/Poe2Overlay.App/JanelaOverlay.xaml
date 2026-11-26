@@ -1,0 +1,121 @@
+<Window x:Class="Poe2Overlay.App.JanelaOverlay"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Pit Overlay's"
+        WindowStyle="None" AllowsTransparency="True" Background="Transparent"
+        Topmost="True" ShowInTaskbar="False" ShowActivated="False" ResizeMode="NoResize"
+        SizeToContent="WidthAndHeight" UseLayoutRounding="True"
+        FontFamily="Segoe UI" TextOptions.TextFormattingMode="Display">
+  <!-- Cores vêm do esquema escolhido (AplicarEsquema troca estes recursos e tudo se repinta). -->
+  <Window.Resources>
+    <SolidColorBrush x:Key="CorFundo" Color="#F2141216" />
+    <SolidColorBrush x:Key="CorBorda" Color="#8C7A4E" />
+    <SolidColorBrush x:Key="CorDestaque" Color="#E8C46A" />
+    <SolidColorBrush x:Key="CorTexto" Color="#E8E2D4" />
+    <SolidColorBrush x:Key="CorSecundario" Color="#D8D0C0" />
+    <SolidColorBrush x:Key="CorDetalhe" Color="#9A9488" />
+    <SolidColorBrush x:Key="CorMod" Color="#9CA8F0" />
+    <SolidColorBrush x:Key="CorModSecundario" Color="#8A8478" />
+    <SolidColorBrush x:Key="CorDica" Color="#6E6A62" />
+    <SolidColorBrush x:Key="CorSeparador" Color="#408C7A4E" />
+  </Window.Resources>
+
+  <!-- Moldura transparente dá espaço para a sombra do cartão. -->
+  <Border x:Name="Moldura" Padding="12" Background="Transparent">
+    <!-- Clicar e arrastar no cartão (fora dos controles) move a janela. -->
+    <Border x:Name="Cartao" Width="440" Padding="16,14" CornerRadius="6"
+            Background="{DynamicResource CorFundo}" BorderBrush="{DynamicResource CorBorda}" BorderThickness="1">
+      <Border.Effect>
+        <DropShadowEffect BlurRadius="14" ShadowDepth="0" Opacity="0.7" Color="Black" />
+      </Border.Effect>
+      <StackPanel>
+        <Grid>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+          </Grid.ColumnDefinitions>
+          <TextBlock x:Name="TxtNome" FontSize="18" FontWeight="SemiBold" TextWrapping="Wrap" VerticalAlignment="Center"
+                     ToolTip="Arraste para mover" />
+          <Button x:Name="BtnConfig" Grid.Column="1" Focusable="False" ToolTip="Configurações"
+                  Content="&#xE713;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="14"
+                  Padding="6,4" Margin="8,-4,0,0" VerticalAlignment="Top"
+                  Background="Transparent" BorderThickness="0" Foreground="{DynamicResource CorDetalhe}" />
+          <!-- X: esconde o overlay (igual Esc). Sair do programa é pela bandeja. -->
+          <Button x:Name="BtnFechar" Grid.Column="2" Focusable="False" ToolTip="Fechar (Esc)"
+                  Content="&#xE711;" FontFamily="Segoe Fluent Icons, Segoe MDL2 Assets" FontSize="14"
+                  Padding="6,4" Margin="2,-4,-6,0" VerticalAlignment="Top"
+                  Background="Transparent" BorderThickness="0" Foreground="{DynamicResource CorDetalhe}" />
+        </Grid>
+        <TextBlock x:Name="TxtBase" FontSize="13" Foreground="{DynamicResource CorSecundario}" TextWrapping="Wrap" Margin="0,2,0,0" />
+        <TextBlock x:Name="TxtDetalhes" FontSize="12" Foreground="{DynamicResource CorDetalhe}" TextWrapping="Wrap" Margin="0,6,0,0" />
+        <TextBlock x:Name="TxtDps" FontSize="13" Foreground="{DynamicResource CorDestaque}" TextWrapping="Wrap" Margin="0,6,0,0" Visibility="Collapsed" />
+
+        <!-- Liga e moeda: trocar dispara uma nova busca. -->
+        <Grid x:Name="PainelSeletores" Margin="0,12,0,0" Visibility="Collapsed">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="8" />
+            <ColumnDefinition Width="140" />
+          </Grid.ColumnDefinitions>
+          <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="6" />
+            <RowDefinition Height="Auto" />
+          </Grid.RowDefinitions>
+          <!-- Focusable=False em tudo: pegar foco de teclado ativaria a janela e tiraria o teclado do jogo. -->
+          <ComboBox x:Name="CmbLiga" Grid.Column="0" ToolTip="Liga" Focusable="False" />
+          <ComboBox x:Name="CmbMoeda" Grid.Column="2" Focusable="False"
+                    ToolTip="Qualquer: todos os anúncios, do mais barato ao mais caro, cada um na sua moeda. Ou só anúncios em uma moeda." />
+          <Grid Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="8" />
+              <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <ComboBox x:Name="CmbIdentificado" Grid.Column="0" Focusable="False"
+                      ToolTip="Buscar itens identificados, não identificados ou ambos" />
+            <ComboBox x:Name="CmbCorrupcao" Grid.Column="2" Focusable="False"
+                      ToolTip="Corrupção dos itens buscados (começa igual à do seu item)" />
+          </Grid>
+        </Grid>
+
+        <StackPanel x:Name="ListaMods" Margin="0,8,0,0" Visibility="Collapsed" />
+
+        <!-- Busca por DPS: pergunta quais atributos importam além do DPS. -->
+        <Border x:Name="PainelDps" Visibility="Collapsed" Margin="0,10,0,0" Padding="12,10" CornerRadius="5"
+                BorderThickness="1" BorderBrush="{DynamicResource CorBorda}" Background="{DynamicResource CorSeparador}">
+          <StackPanel>
+            <TextBlock Text="Busca por DPS" FontSize="14" FontWeight="SemiBold" Foreground="{DynamicResource CorDestaque}" />
+            <TextBlock x:Name="TxtPainelDps" FontSize="12" TextWrapping="Wrap" Margin="0,4,0,0" Foreground="{DynamicResource CorTexto}" />
+            <StackPanel x:Name="ListaDps" Margin="0,6,0,0" />
+            <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+              <Button x:Name="BtnDpsBuscar" Content="Buscar por DPS" Focusable="False" />
+              <Button x:Name="BtnDpsCancelar" Content="Cancelar" Margin="8,0,0,0" Focusable="False" />
+            </StackPanel>
+          </StackPanel>
+        </Border>
+
+        <Rectangle x:Name="Separador" Height="1" Fill="{DynamicResource CorSeparador}" Margin="0,12" />
+
+        <!-- Resultado: preço grande + resumo + anúncios numa caixa à parte. -->
+        <TextBlock x:Name="TxtPreco" FontSize="26" FontWeight="SemiBold" Foreground="{DynamicResource CorDestaque}"
+                   Visibility="Collapsed" Margin="0,-2,0,0" />
+        <TextBlock x:Name="TxtCorpo" FontSize="14" TextWrapping="Wrap" />
+        <Border x:Name="CaixaAnuncios" Visibility="Collapsed" Margin="0,8,0,0" Padding="10,6" CornerRadius="5"
+                Background="{DynamicResource CorSeparador}">
+          <StackPanel x:Name="ListaAnuncios" />
+        </Border>
+
+        <WrapPanel x:Name="PainelBotoes" Orientation="Horizontal" Margin="0,12,0,0" Visibility="Collapsed">
+          <Button x:Name="BtnBuscar" Content="Buscar de novo" Focusable="False" Margin="0,0,8,6" />
+          <Button x:Name="BtnDps" Content="Busca por DPS" Focusable="False" Margin="0,0,8,6" Visibility="Collapsed"
+                  ToolTip="Procura armas com DPS parecido, considerando só os atributos que você escolher" />
+          <Button x:Name="BtnSite" Content="Abrir no site" Focusable="False" Margin="0,0,0,6" />
+        </WrapPanel>
+
+        <TextBlock x:Name="TxtDica" FontSize="11" Foreground="{DynamicResource CorDica}" TextWrapping="Wrap" Margin="0,12,0,0" />
+      </StackPanel>
+    </Border>
+  </Border>
+</Window>

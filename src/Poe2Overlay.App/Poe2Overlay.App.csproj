@@ -1,0 +1,30 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- O overlay: janela WPF por cima do jogo, atalhos globais, área de transferência e ícone na bandeja. -->
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <!-- Só para o ícone da bandeja (NotifyIcon); WPF não tem um próprio. -->
+    <UseWindowsForms>true</UseWindowsForms>
+    <!-- Desligado porque WPF + WinForms geram nomes ambíguos (Clipboard, Application...). -->
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AssemblyName>Poe2Overlay</AssemblyName>
+    <RootNamespace>Poe2Overlay.App</RootNamespace>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <!-- Gerado por ferramentas/gerar-icone.ps1 (também vai embutido para o ícone da bandeja). -->
+    <ApplicationIcon>Recursos\icone.ico</ApplicationIcon>
+    <!-- O DPI vem do manifesto (o WPF é quem cria as janelas); o aviso é do WinForms. -->
+    <NoWarn>$(NoWarn);WFO0003</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Recursos\icone.ico" LogicalName="icone.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Poe2Overlay.Nucleo\Poe2Overlay.Nucleo.csproj" />
+  </ItemGroup>
+
+</Project>
